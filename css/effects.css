@@ -1,0 +1,28 @@
+.chart-image {
+  position: relative;
+  transition: filter 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.chart-image.edge-active {
+  box-shadow: 0 25px 45px rgba(10, 61, 98, 0.18);
+}
+
+.chart-image.edge-active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--edge-x, 50%) var(--edge-y, 50%), rgba(10, 61, 98, 0.25), transparent 65%);
+  mix-blend-mode: screen;
+  opacity: 0.35;
+  transition: opacity 0.25s ease;
+}
+
+.chart-image.edge-active.glow-strong {
+  filter: hue-rotate(6deg) saturate(1.08) brightness(1.04);
+}
+
+.chart-image.edge-active.glow-strong::after {
+  opacity: 0.55;
+}

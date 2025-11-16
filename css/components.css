@@ -1,0 +1,89 @@
+.site-nav__toggle[aria-expanded="true"] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.site-nav.is-open + .site-nav__toggle,
+.site-nav__toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.hero {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: center;
+}
+
+.hero__visual {
+  min-height: 260px;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  box-shadow: var(--shadow-sm);
+  transform: scale(1.15);
+}
+
+.stat-banner h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.section__note code {
+  background: rgba(10, 61, 98, 0.08);
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+  font-family: "SF Mono", "Fira Code", "Roboto Mono", monospace;
+  font-size: 0.85rem;
+}
+
+.stats-table__row span {
+  word-break: break-word;
+}
+
+.metric-card ul,
+.skill-card p,
+.metric-card p {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.metric-card ul {
+  list-style: disc;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.skill-card {
+  text-align: left;
+}
+
+.section--cta .button--primary {
+  background: #fff;
+  color: var(--accent);
+}
+
+.section--cta .button--primary:hover,
+.section--cta .button--primary:focus {
+  box-shadow: 0 15px 30px rgba(13, 60, 94, 0.35);
+}
+
+.chart-image.is-loaded {
+  filter: none;
+}
+
+.chart-image.is-lazy {
+  filter: blur(8px) saturate(0.8);
+}
+
+.site-footer p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+@media (min-width: 1024px) {
+  .section__body.two-column {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

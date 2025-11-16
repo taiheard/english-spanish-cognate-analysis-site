@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home | English-Spanish Cognate Analysis</title>
+  <meta name="description" content="Explore the English-Spanish cognate analysis project highlighting key statistics, insights, and interactive visuals." />
+  <link rel="prefetch" href="findings.html" as="document" />
+  <link rel="prefetch" href="interactive.html" as="document" />
+  <style>
+:root {
+  color-scheme: light;
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e9ecef;
+  --border: #dee2e6;
+  --accent: #0a3d62;
+  --accent-muted: #1f5b89;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --text-accent: #ff6b35;
+  --radius-sm: 0.75rem;
+  --shadow-sm: 0 20px 40px rgba(10, 61, 98, 0.08);
+  --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-base);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100%;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  z-index: 999;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 249, 250, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-brand {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
+.site-nav {
+  display: flex;
+}
+
+.site-nav__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.site-nav__link--active,
+.site-nav__link:focus,
+.site-nav__link:hover {
+  background: rgba(15, 85, 133, 0.12);
+  color: var(--accent);
+}
+
+.site-nav__toggle {
+  display: none;
+}
+
+.page-hero,
+.hero {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 4.5rem 1.75rem 2.5rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.hero__content {
+  max-width: 640px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+h1,
+h2,
+.page-hero__lede,
+.hero__subtitle {
+  margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.2;
+  max-width: 90%;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.2;
+}
+
+.hero__subtitle,
+.page-hero__lede {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 48ch;
+}
+
+.button,
+.button--primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover,
+.button:focus {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-banner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1.5rem 1.75rem 3rem;
+}
+
+.stat-banner__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stat-banner__item {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.stat-banner__value {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-banner__label {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding: 2rem 1.75rem;
+  text-align: center;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+@media (max-width: 840px) {
+  .site-nav {
+    position: fixed;
+    inset: 0 0 auto auto;
+    background: rgba(248, 249, 250, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem;
+    display: none;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .site-nav.is-open {
+    display: block;
+  }
+
+  .site-nav__list {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .site-nav__link {
+    font-size: 1rem;
+    justify-content: center;
+  }
+
+  .site-nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .hero,
+  .page-hero {
+    padding-top: 3.5rem;
+  }
+}
+  </style>
+  <link rel="preload" href="css/main.css" as="style" />
+  <link rel="preload" href="css/components.css" as="style" />
+  <link rel="preload" href="css/effects.css" as="style" />
+  <link rel="stylesheet" href="css/main.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="css/components.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="css/effects.css" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/effects.css" />
+  </noscript>
+  <link rel="icon" type="image/png" href="assets/images/analysis/overall_relationship_types.png" />
+  <script defer src="js/navigation.js"></script>
+  <script defer src="js/lazy-load.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a href="index.html" class="site-brand" aria-label="English-Spanish Cognate Analysis home">
+        English-Spanish Cognate Analysis
+      </a>
+      <button class="site-nav__toggle" aria-expanded="false" aria-controls="primary-navigation">
+        <span class="site-nav__toggle-label">Menu</span>
+      </button>
+      <nav id="primary-navigation" class="site-nav" aria-label="Primary">
+        <ul class="site-nav__list">
+          <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="index.html">Home</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="methodology.html">Methodology</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="findings.html">Findings</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="interactive.html">Interactive</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="statistics.html">Statistics</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero__content">
+        <p class="eyebrow">Portfolio Spotlight</p>
+        <h1 id="hero-title">Universal Music To Space-Age Spanish: A Data-Driven Journey</h1>
+        <p class="hero__subtitle">Analyzing 3,000+ English-Spanish word relationships to uncover which similarities help—and which 'false friend' words mislead.</p>
+        <p class="hero__story">I cut my analytical teeth at Universal Music, now I'm teaching myself Spanish by streaming <em>Star Trek: The Next Generation</em> in Spanish—sparking the question: how much vocabulary is already hiding in plain sight?</p>
+        <a class="button button--primary" href="findings.html">Explore the analysis</a>
+      </div>
+      <img 
+        src="spanish_english_world_map.png" 
+        alt="World map showing English-Spanish language relationships"
+        class="hero__visual"
+        loading="lazy"
+        width="1200"
+        height="800"
+      />
+    </section>
+
+    <section class="stat-banner" aria-labelledby="stat-banner-title">
+      <h2 id="stat-banner-title">Key Project Metrics</h2>
+      <ul class="stat-banner__list">
+        <li class="stat-banner__item">
+          <p class="stat-banner__value">3,032</p>
+          <p class="stat-banner__label">Word pairs analyzed</p>
+        </li>
+        <li class="stat-banner__item">
+          <p class="stat-banner__value">86.8%</p>
+          <p class="stat-banner__label">True cognates</p>
+        </li>
+        <li class="stat-banner__item">
+          <p class="stat-banner__value">7.4%</p>
+          <p class="stat-banner__label">False friends</p>
+        </li>
+        <li class="stat-banner__item">
+          <p class="stat-banner__value">13+</p>
+          <p class="stat-banner__label">Linguistic metrics tracked</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="overview" aria-labelledby="overview-title">
+      <h2 id="overview-title">What you&apos;ll find</h2>
+      <div class="overview__grid">
+        <article class="card">
+          <h3 class="card__title">False friends decoded</h3>
+          <p class="card__body">See why deceptively similar words are often the most dangerous, and which domains carry the highest risk.</p>
+          <a class="card__link" href="findings.html#false-friends">Dive into findings</a>
+        </article>
+        <article class="card">
+          <h3 class="card__title">Loanword flow visualized</h3>
+          <p class="card__body">Compare how cultural exchange and technological adoption shape the vocabulary flowing between English and Spanish.</p>
+          <a class="card__link" href="findings.html#loanwords">View loanword analysis</a>
+        </article>
+        <article class="card">
+          <h3 class="card__title">Interactive dataset explorer</h3>
+          <p class="card__body">Filter the full dataset by relationship type, domain, and complexity to tailor the analysis to your interests.</p>
+          <a class="card__link" href="interactive.html">Launch the explorer</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="featured-chart" aria-labelledby="featured-chart-title">
+      <h2 id="featured-chart-title">Relationship types at a glance</h2>
+      <figure class="chart-container">
+        <img
+          src="assets/images/analysis/overall_relationship_types.png"
+          alt="Donut chart showing the distribution of cognates, false friends, and loanwords"
+          class="chart-image"
+          loading="lazy"
+          width="1200"
+          height="800"
+        />
+        <figcaption>The dataset skews heavily toward true cognates, but nearly one in thirteen pairs are false friends—making them high priority for learners.</figcaption>
+      </figure>
+    </section>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <p>Copyright © 2025 English-Spanish Cognate Analysis. Unauthorized reproduction prohibited.</p>
+  </footer>
+  <script defer src="js/edge-effects.js"></script>
+</body>
+</html>

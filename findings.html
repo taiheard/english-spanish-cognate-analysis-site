@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Findings | English-Spanish Cognate Analysis</title>
+  <meta name="description" content="Dig into key findings from the English-Spanish cognate analysis, including false friends, loanword flows, complexity metrics, and temporal patterns." />
+  <style>
+:root {
+  color-scheme: light;
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e9ecef;
+  --border: #dee2e6;
+  --accent: #0a3d62;
+  --accent-muted: #1f5b89;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --text-accent: #ff6b35;
+  --radius-sm: 0.75rem;
+  --shadow-sm: 0 20px 40px rgba(10, 61, 98, 0.08);
+  --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-base);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100%;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  z-index: 999;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 249, 250, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-brand {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
+.site-nav {
+  display: flex;
+}
+
+.site-nav__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.site-nav__link--active,
+.site-nav__link:focus,
+.site-nav__link:hover {
+  background: rgba(15, 85, 133, 0.12);
+  color: var(--accent);
+}
+
+.site-nav__toggle {
+  display: none;
+}
+
+.page-hero,
+.hero {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 4.5rem 1.75rem 2.5rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.hero__content {
+  max-width: 640px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+h1,
+h2,
+.page-hero__lede,
+.hero__subtitle {
+  margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.2;
+}
+
+.hero__subtitle,
+.page-hero__lede {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 48ch;
+}
+
+.button,
+.button--primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover,
+.button:focus {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-banner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1.5rem 1.75rem 3rem;
+}
+
+.stat-banner__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stat-banner__item {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.stat-banner__value {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-banner__label {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding: 2rem 1.75rem;
+  text-align: center;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+@media (max-width: 840px) {
+  .site-nav {
+    position: fixed;
+    inset: 0 0 auto auto;
+    background: rgba(248, 249, 250, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem;
+    display: none;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .site-nav.is-open {
+    display: block;
+  }
+
+  .site-nav__list {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .site-nav__link {
+    font-size: 1rem;
+    justify-content: center;
+  }
+
+  .site-nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .hero,
+  .page-hero {
+    padding-top: 3.5rem;
+  }
+}
+  </style>
+  <link rel="preload" href="css/main.css" as="style" />
+  <link rel="preload" href="css/components.css" as="style" />
+  <link rel="preload" href="css/effects.css" as="style" />
+  <link rel="stylesheet" href="css/main.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="css/components.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="css/effects.css" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/effects.css" />
+  </noscript>
+  <link rel="icon" type="image/png" href="assets/images/analysis/overall_relationship_types.png" />
+  <script defer src="js/navigation.js"></script>
+  <script defer src="js/lazy-load.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a href="index.html" class="site-brand" aria-label="English-Spanish Cognate Analysis home">
+        English-Spanish Cognate Analysis
+      </a>
+      <button class="site-nav__toggle" aria-expanded="false" aria-controls="primary-navigation">
+        <span class="site-nav__toggle-label">Menu</span>
+      </button>
+      <nav id="primary-navigation" class="site-nav" aria-label="Primary">
+        <ul class="site-nav__list">
+          <li class="site-nav__item"><a class="site-nav__link" href="index.html">Home</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="methodology.html">Methodology</a></li>
+          <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="findings.html">Findings</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="interactive.html">Interactive</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="statistics.html">Statistics</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" tabindex="-1">
+    <header class="page-hero" aria-labelledby="page-title">
+      <p class="eyebrow">Key findings</p>
+      <h1 id="page-title">Insights that reshape language learning strategy</h1>
+      <p class="page-hero__lede">False friends, loanword flows, complexity metrics, and historical timing all play a deeper role than surface similarity suggests.</p>
+      <div style="margin-top: 1.5rem;">
+        <a href="assets/docs/executive_summary.pdf" download="Executive_Summary_English_Spanish_Cognate_Analysis.pdf" class="button button--primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M8 11L3 6h3V2h4v4h3L8 11zM2 13h12v1H2v-1z" fill="currentColor"/>
+          </svg>
+          Download Executive Summary (PDF)
+        </a>
+        <p style="margin-top: 0.75rem; font-size: 0.875rem; color: var(--text-muted); max-width: 48ch;">A concise 1-page summary for decision-makers: key metrics, core findings, and strategic recommendations.</p>
+      </div>
+    </header>
+
+    <section id="big-picture" class="section" aria-labelledby="big-picture-title">
+      <div class="section__header">
+        <h2 id="big-picture-title">1. The big picture</h2>
+        <p class="section__subtitle">Most similarities are safe—but the dangerous ones appear frequently enough to demand attention.</p>
+      </div>
+      <blockquote class="pull-quote">While most similar words are safe, <span>1 in 13</span> will trick you.</blockquote>
+      <div class="section__body">
+        <ul class="key-takeaways">
+          <li>True cognates represent 86.8% of the dataset, providing a powerful foundation for accelerated vocabulary learning.</li>
+          <li>False friends account for 7.4% of word pairs yet show up often in daily language, creating outsized confusion risk.</li>
+          <li>Loanwords illustrate the cultural and technological forces directing vocabulary exchange between languages.</li>
+        </ul>
+        <figure class="chart-container">
+          <img
+            src="assets/images/analysis/overall_relationship_types.png"
+            alt="Donut chart showing distribution of true cognates, false friends, and loanwords"
+            class="chart-image"
+            loading="lazy"
+            width="1200"
+            height="800"
+          />
+          <figcaption>True cognates dominate, but false friends and loanwords highlight strategic learning opportunities.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="false-friends" class="section" aria-labelledby="false-friends-title">
+      <div class="section__header">
+        <h2 id="false-friends-title">2. The false friends paradox</h2>
+        <p class="section__subtitle">The most deceptive words are also the ones learners encounter first.</p>
+      </div>
+      <blockquote class="pull-quote">Abstract concepts drift apart; <span>concrete terms stay aligned</span>.</blockquote>
+      <div class="section__body">
+        <div class="two-column">
+          <div>
+            <h3>Frequency paradox</h3>
+            <ul class="key-takeaways">
+              <li>False friends recorded a mean frequency score of 2.95, significantly higher than true cognates (p &lt; 0.000001, Cohen&apos;s d = -0.64).</li>
+              <li>High-frequency false friends such as <em>actual/actual</em> and <em>embarazada/embarrassed</em> demand explicit instructional warnings.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Domain risk analysis</h3>
+            <ul class="key-takeaways">
+              <li>Emotions/Psychology (13.33%) and Family/Kinship (20.00%) have the highest false friend rates.</li>
+              <li>Technology/Tools (3.69%) remains one of the safest domains thanks to modern standardization.</li>
+            </ul>
+          </div>
+        </div>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/false_friends_by_domain.png" alt="Bar chart comparing false friend counts by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>False friend counts spike in abstract, culturally shaped domains.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/ffr_by_domain.png" alt="Bar chart showing false friend rate by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Family, emotions, and food require special caution for learners and instructional designers.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/false_friends_taxonomy_pie.png" alt="Pie chart illustrating false friend taxonomy" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Complete semantic shifts account for 40% of false friends, followed closely by partial drifts.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/false_friends_network.png" alt="Network graph of false friends grouped by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Network view highlights clusters around emotions, values, and family—areas ripe for targeted curriculum support.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="loanwords" class="section" aria-labelledby="loanwords-title">
+      <div class="section__header">
+        <h2 id="loanwords-title">3. Loanwords: a two-way street</h2>
+        <p class="section__subtitle">Cultural enrichment flows one way; technological necessity flows the other.</p>
+      </div>
+      <blockquote class="pull-quote">Direction matters. <span>English loans = must-have modern vocabulary</span>.</blockquote>
+      <div class="section__body">
+        <div class="two-column">
+          <div>
+            <h3>Spanish → English</h3>
+            <ul class="key-takeaways">
+              <li>Mean frequency score of 3.76 indicates lower everyday usage (specialty terms).</li>
+              <li>Culinary and cultural staples dominate: <em>taco</em>, <em>fiesta</em>, <em>siesta</em>.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>English → Spanish</h3>
+            <ul class="key-takeaways">
+              <li>Mean frequency score of 2.84 reflects high-frequency, daily-use vocabulary.</li>
+              <li>Technology and digital life lead: <em>email</em>, <em>software</em>, <em>smartphone</em>.</li>
+            </ul>
+          </div>
+        </div>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/borrowing_waves_by_period.png" alt="Stacked area chart of borrowing waves by period" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Technological borrowing surges in the late 20th and early 21st centuries.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/food_cumulative_timeline.png" alt="Timeline chart showing cumulative adoption of food-related loanwords" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Culinary loanwords maintain steady adoption over centuries, reflecting cultural cross-pollination.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/tech_growth.png" alt="Line chart showing growth of technology-related loanwords" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Modern tech vocabulary spreads rapidly into Spanish, making English a key linguistic exporter.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="complexity" class="section" aria-labelledby="complexity-title">
+      <div class="section__header">
+        <h2 id="complexity-title">4. Complexity &amp; similarity</h2>
+        <p class="section__subtitle">Surface similarity stops at the spelling—complexity lives elsewhere.</p>
+      </div>
+      <blockquote class="pull-quote">Spanish-English Similarity is a poor proxy for complexity—<span>r = 0.008</span>.</blockquote>
+      <div class="section__body">
+        <ul class="key-takeaways">
+          <li>Levenshtein similarity shows almost no correlation with overall complexity (r = 0.008).</li>
+          <li>Word length and syllables strongly align with complexity (r ≥ 0.76).</li>
+          <li>Health and medicine cognates trend most complex; nature and everyday communication trend simpler.</li>
+        </ul>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/correlation_triangle.png" alt="Correlation triangle matrix of key metrics" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Complexity metrics cluster tightly; similarity floats alone.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/correlation_network.png" alt="Network visualization of correlations between complexity components" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Network view reinforces the disconnect between similarity and complexity.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/complexity_distributions.png" alt="Boxplots of complexity scores by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Domain-level complexity varies significantly; not all cognates are equally approachable.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/complexity_means_ranked.png" alt="Ranked bars of mean complexity by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Health and medicine lead in complexity, while nature and language communication remain accessible.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="temporal" class="section" aria-labelledby="temporal-title">
+      <div class="section__header">
+        <h2 id="temporal-title">5. Temporal patterns</h2>
+        <p class="section__subtitle">False friends are relics of history—modern standardization curbs new divergence.</p>
+      </div>
+      <blockquote class="pull-quote">Most false friends are ancient—they&apos;ve been <span>tricking learners for centuries</span>.</blockquote>
+      <div class="section__body">
+        <ul class="key-takeaways">
+          <li>55.3% of false friends emerged before 1400; 31.8% in the Renaissance; only 5.3% in modern times.</li>
+          <li>Transition periods (1400-1500, 1700-1800) show distinctive blends of semantic drift types.</li>
+          <li>Modern divergence often ties to domain-specific technical language rather than organic drift.</li>
+        </ul>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/false_friends_emergence_by_period.png" alt="Column chart showing false friend emergence by historical period" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Medieval and Renaissance periods produced the majority of false friends.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/semantic_shift_type_by_period.png" alt="Stacked bars showing semantic shift types by period" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Complete semantic shifts dominate early periods; modern false friends are more technical or nuanced.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="business-impact" class="section" aria-labelledby="business-impact-title">
+      <div class="section__header">
+        <h2 id="business-impact-title">6. Business impact</h2>
+        <p class="section__subtitle">Data-driven strategies for language learning applications and curriculum design.</p>
+      </div>
+      <blockquote class="pull-quote">Strategic targeting delivers <span>maximum impact with minimal resources</span>.</blockquote>
+      <div class="section__body">
+        <ul class="key-takeaways">
+          <li>Prioritizing high-FFR domains (Family/Kinship, Emotions/Psychology) could significantly reduce learner confusion in critical vocabulary areas.</li>
+          <li>Targeting high-frequency false friends first has disproportionate impact on daily usage scenarios learners encounter most often.</li>
+          <li>Resource allocation efficiency: strategic focus on the highest-risk vocabulary addresses the majority of common errors.</li>
+        </ul>
+        <div class="two-column">
+          <div>
+            <h3>Curriculum optimization</h3>
+            <ul class="key-takeaways">
+              <li>Early-stage instruction should flag high-frequency false friends (<em>actual</em>, <em>embarazada</em>, <em>sensible</em>) with explicit warnings.</li>
+              <li>Domain-based sequencing: introduce safe domains (Technology/Tools) before high-risk domains (Family, Emotions).</li>
+              <li>Leverage true cognates (86.8% of dataset) for rapid vocabulary expansion while maintaining false friend awareness.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Application design</h3>
+            <ul class="key-takeaways">
+              <li>Adaptive learning systems can prioritize false friend practice based on frequency data and domain risk.</li>
+              <li>Error prediction models benefit from domain-specific false friend rates and historical emergence patterns.</li>
+              <li>Personalized learning paths can sequence vocabulary by length and syllable complexity to match individual learner readiness.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="text-align: center; padding: 3rem 1.75rem; background: var(--bg-secondary); border-radius: var(--radius-sm); margin: 2rem auto; max-width: 1200px;">
+      <h2 style="margin-bottom: 1rem; font-size: 1.5rem;">Executive Summary</h2>
+      <p style="margin-bottom: 1.5rem; color: var(--text-secondary); max-width: 48ch; margin-left: auto; margin-right: auto;">A concise 1-page summary for decision-makers: key metrics, core findings, and strategic recommendations.</p>
+      <a href="assets/docs/executive_summary.pdf" download="Executive_Summary_English_Spanish_Cognate_Analysis.pdf" class="button button--primary" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 11L3 6h3V2h4v4h3L8 11zM2 13h12v1H2v-1z" fill="currentColor"/>
+        </svg>
+        Download Executive Summary (PDF)
+      </a>
+    </section>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <p>Copyright © 2025 English-Spanish Cognate Analysis. Unauthorized reproduction prohibited.</p>
+  </footer>
+  <script defer src="js/edge-effects.js"></script>
+</body>
+</html>

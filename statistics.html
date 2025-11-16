@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Statistics | English-Spanish Cognate Analysis</title>
+  <meta name="description" content="Review the statistical tests, effect sizes, and validation tables underpinning the English-Spanish cognate analysis." />
+  <style>
+:root {
+  color-scheme: light;
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e9ecef;
+  --border: #dee2e6;
+  --accent: #0a3d62;
+  --accent-muted: #1f5b89;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --text-accent: #ff6b35;
+  --radius-sm: 0.75rem;
+  --shadow-sm: 0 20px 40px rgba(10, 61, 98, 0.08);
+  --font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-base);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100%;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  position: fixed;
+  left: 50%;
+  top: 1rem;
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  z-index: 999;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 249, 250, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-brand {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+
+.site-nav {
+  display: flex;
+}
+
+.site-nav__list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.site-nav__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.site-nav__link--active,
+.site-nav__link:focus,
+.site-nav__link:hover {
+  background: rgba(15, 85, 133, 0.12);
+  color: var(--accent);
+}
+
+.site-nav__toggle {
+  display: none;
+}
+
+.page-hero,
+.hero {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 4.5rem 1.75rem 2.5rem;
+  display: grid;
+  gap: 2rem;
+}
+
+.hero__content {
+  max-width: 640px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+h1,
+h2,
+.page-hero__lede,
+.hero__subtitle {
+  margin: 0 0 1rem;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.2;
+}
+
+.hero__subtitle,
+.page-hero__lede {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  max-width: 48ch;
+}
+
+.button,
+.button--primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:hover,
+.button:focus {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-banner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 1.5rem 1.75rem 3rem;
+}
+
+.stat-banner__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stat-banner__item {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.stat-banner__value {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-banner__label {
+  margin: 0.25rem 0 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding: 2rem 1.75rem;
+  text-align: center;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+@media (max-width: 840px) {
+  .site-nav {
+    position: fixed;
+    inset: 0 0 auto auto;
+    background: rgba(248, 249, 250, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin: 1rem;
+    display: none;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .site-nav.is-open {
+    display: block;
+  }
+
+  .site-nav__list {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .site-nav__link {
+    font-size: 1rem;
+    justify-content: center;
+  }
+
+  .site-nav__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-secondary);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .hero,
+  .page-hero {
+    padding-top: 3.5rem;
+  }
+}
+  </style>
+  <link rel="preload" href="css/main.css" as="style" />
+  <link rel="preload" href="css/components.css" as="style" />
+  <link rel="preload" href="css/effects.css" as="style" />
+  <link rel="stylesheet" href="css/main.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="css/components.css" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="css/effects.css" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/effects.css" />
+  </noscript>
+  <link rel="icon" type="image/png" href="assets/images/analysis/overall_relationship_types.png" />
+  <script defer src="js/navigation.js"></script>
+  <script defer src="js/lazy-load.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a href="index.html" class="site-brand" aria-label="English-Spanish Cognate Analysis home">
+        English-Spanish Cognate Analysis
+      </a>
+      <button class="site-nav__toggle" aria-expanded="false" aria-controls="primary-navigation">
+        <span class="site-nav__toggle-label">Menu</span>
+      </button>
+      <nav id="primary-navigation" class="site-nav" aria-label="Primary">
+        <ul class="site-nav__list">
+          <li class="site-nav__item"><a class="site-nav__link" href="index.html">Home</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="methodology.html">Methodology</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="findings.html">Findings</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="interactive.html">Interactive</a></li>
+          <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="statistics.html">Statistics</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" tabindex="-1">
+    <header class="page-hero" aria-labelledby="page-title">
+      <p class="eyebrow">Statistical backbone</p>
+      <h1 id="page-title">Testing hypotheses behind the insights</h1>
+      <p class="page-hero__lede">Every narrative is backed by statistical evidence—confidence intervals, effect sizes, and validation tables keep the story grounded.</p>
+    </header>
+
+    <section id="overview" class="section" aria-labelledby="overview-title">
+      <h2 id="overview-title">Hypothesis testing overview</h2>
+      <p>The project employs independent samples t-tests, one-way ANOVA with Tukey post-hoc comparisons, and descriptive risk analysis. Each test is explained below alongside visual summaries.</p>
+    </section>
+
+    <section id="analysis-frequency" class="section" aria-labelledby="analysis-frequency-title">
+      <div class="section__header">
+        <h2 id="analysis-frequency-title">Analysis 1: False friends frequency paradox</h2>
+        <p class="section__subtitle">Are false friends encountered more frequently than true cognates?</p>
+      </div>
+      <div class="section__body">
+        <p><strong>Note:</strong> Lower frequency score = higher frequency. The frequency metric is inverted, so a lower number indicates more frequent usage.</p>
+        <div class="stats-table" role="table" aria-label="False friends frequency t-test results">
+          <div class="stats-table__row stats-table__row--head" role="row">
+            <span role="columnheader">Metric</span>
+            <span role="columnheader">False friends</span>
+            <span role="columnheader">True cognates</span>
+            <span role="columnheader">Comparison</span>
+          </div>
+          <div class="stats-table__row stats-table__row--section" role="row">
+            <span role="columnheader">Group statistics (descriptive)</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">Mean frequency score</span>
+            <span role="cell">2.9464</span>
+            <span role="cell">3.7509</span>
+            <span role="cell">-0.8045 (False − True)</span>
+          </div>
+          <div class="stats-table__row stats-table__row--section" role="row">
+            <span role="columnheader">Comparative test results</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">t-statistic</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell">-8.0467</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">p-value</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell">&lt; 0.000001</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">Effect size (Cohen&apos;s d)</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell">-0.6368 (Medium)</span>
+          </div>
+        </div>
+        <ul class="key-takeaways">
+          <li>False friends appear significantly more often than true cognates, making them a high-frequency hazard for learners.</li>
+          <li>Curriculum designers should prioritize explicit warnings for high-frequency false friend pairs.</li>
+        </ul>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/frequency_analysis.png" alt="Distribution of frequency scores for false friends vs true cognates" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Higher usage frequency amplifies the confusion risk posed by false friends.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="analysis-technical" class="section" aria-labelledby="analysis-technical-title">
+      <div class="section__header">
+        <h2 id="analysis-technical-title">Analysis 2: Technical vocabulary paradox</h2>
+        <p class="section__subtitle">Do technical domains maintain higher orthographic (spelling) similarity?</p>
+      </div>
+      <div class="section__body">
+        <p>Hypothesis: Technical/scientific cognates remain more orthographically similar than core/common vocabulary.</p>
+        <div class="stats-table" role="table" aria-label="Technical vocabulary t-test results">
+          <div class="stats-table__row stats-table__row--head" role="row">
+            <span role="columnheader">Metric</span>
+            <span role="columnheader">Technical domains</span>
+            <span role="columnheader">Core domains</span>
+            <span role="columnheader">Comparison</span>
+          </div>
+          <div class="stats-table__row stats-table__row--section" role="row">
+            <span role="columnheader">Group statistics (descriptive)</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">Mean Jaccard similarity</span>
+            <span role="cell">0.7710</span>
+            <span role="cell">0.7682</span>
+            <span role="cell">0.0027 (Technical − Core)</span>
+          </div>
+          <div class="stats-table__row stats-table__row--section" role="row">
+            <span role="columnheader">Comparative test results</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">t-statistic</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell">0.2585</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">p-value</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell">0.398</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">Effect size (Cohen&apos;s d)</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell" aria-hidden="true">&mdash;</span>
+            <span role="cell">0.0156 (Negligible)</span>
+          </div>
+        </div>
+        <ul class="key-takeaways">
+          <li>No statistically significant difference emerged—orthographic similarity is not preserved systematically in technical domains.</li>
+          <li>Instruction should instead focus on complexity metrics and domain-specific vocabulary planning.</li>
+        </ul>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/technical_paradox_analysis.png" alt="Chart comparing similarity across technical vs core domains" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Technical vocabulary does not guarantee easier recognition—complexity and frequency are better guides.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="analysis-anova" class="section" aria-labelledby="analysis-anova-title">
+      <div class="section__header">
+        <h2 id="analysis-anova-title">Analysis 3: Complexity across domains (ANOVA)</h2>
+        <p class="section__subtitle">Which cultural domains produce the most complex cognates?</p>
+      </div>
+      <div class="section__body">
+        <div class="stats-table" role="table" aria-label="ANOVA results">
+          <div class="stats-table__row stats-table__row--head" role="row">
+            <span role="columnheader">Statistic</span>
+            <span role="columnheader">Value</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">F-statistic</span>
+            <span role="cell">18.9689</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">p-value</span>
+            <span role="cell">&lt; 0.000001</span>
+          </div>
+          <div class="stats-table__row" role="row">
+            <span role="cell">Effect size (η²)</span>
+            <span role="cell">0.0627 (medium)</span>
+          </div>
+        </div>
+        <p>Post-hoc Tukey&apos;s HSD revealed significant gaps between health/medicine vs. nature/geography, and emotions/psychology vs. language/communication. <br><strong>Note:</strong> Lower complexity scores = higher word complexity.</p>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/complexity_distributions.png" alt="Boxplot of complexity scores by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Distributions confirm meaningful variability in complexity, informing domain-specific study plans.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/complexity_means_ranked.png" alt="Horizontal bar chart ranking mean complexity by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Health and medicine terms are the most complex; nature and language communication remain the most approachable.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="analysis-ffr" class="section" aria-labelledby="analysis-ffr-title">
+      <div class="section__header">
+        <h2 id="analysis-ffr-title">Analysis 4: False friend rate by domain</h2>
+        <p class="section__subtitle">Which domains deserve extra warning labels?</p>
+      </div>
+      <div class="section__body">
+        <p>False friend rate (FFR) quantifies the percentage of deceptive pairs within each cultural domain.</p>
+        <ul class="key-takeaways">
+          <li>High risk (&ge; 10%): Family/Kinship, Emotions/Psychology, Food/Cuisine, Clothing/Appearance, Festivals.</li>
+          <li>Medium risk (5-10%): Values/Ethics, Housing, Economics, Time, Social.</li>
+          <li>Low risk (&lt; 5%): Technology/Tools, Education, Government, Nature, Health, Religion, Arts.</li>
+        </ul>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/ffr_by_domain.png" alt="Bar chart of false friend rate by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>Prioritize instruction around high-risk domains to reduce learner confusion faster.</figcaption>
+        </figure>
+        <figure class="chart-container">
+          <img src="assets/images/analysis/ffr_detailed_analysis.png" alt="Heatmap showing detailed false friend metrics by domain" class="chart-image" loading="lazy" width="1200" height="800" />
+          <figcaption>False friend rate visualizations for guidance in curriculum planning and self-study prioritization.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="validation" class="section" aria-labelledby="validation-title">
+      <div class="section__header">
+        <h2 id="validation-title">Data quality &amp; limitations</h2>
+        <p class="section__subtitle">Transparency ensures findings remain credible and reproducible.</p>
+      </div>
+      <div class="section__body">
+        <div class="two-column">
+          <div>
+            <h3>Completeness metrics</h3>
+            <ul>
+              <li>English &amp; Spanish words: 100%</li>
+              <li>Relationship type: 100%</li>
+              <li>English attestation: 100%</li>
+              <li>Spanish attestation: 100%</li>
+              <li>Definitions: 69.8%</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Known limitations</h3>
+            <ul>
+              <li>Temporal bias toward post-1800 corpora</li>
+              <li>Geographic emphasis on American/British English and Castilian Spanish</li>
+              <li>Register bias favoring written language</li>
+              <li>Binary loanword direction simplifies complex histories</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Validation checks</h3>
+            <ul>
+              <li>Cross-source comparison of attestation dates (r = 0.73)</li>
+              <li>Manual review of flagged similarity outliers</li>
+              <li>LLM-generated content spot-checked at 88% accuracy</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Actionable transparency</h3>
+            <p>Each chart references archived scripts and datasets, ensuring reproducibility for other analysts.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <p>Copyright © 2025 English-Spanish Cognate Analysis. Unauthorized reproduction prohibited.</p>
+  </footer>
+  <script defer src="js/edge-effects.js"></script>
+</body>
+</html>
