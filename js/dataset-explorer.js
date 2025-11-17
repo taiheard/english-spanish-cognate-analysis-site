@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  const CSV_PATH = '../FINAL_DOCS_5NOV/language_analysis_masterframe25OCT.csv';
+  const CSV_PATH = 'language_analysis_masterframe25OCT.csv';
   let chart = null;
   let allData = [];
 
