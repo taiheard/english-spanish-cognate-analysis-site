@@ -243,6 +243,7 @@ h2 {
 .chart-container {
   width: 100%;
   height: 750px;
+  min-height: 500px;
   margin: 1rem 0;
   background: var(--bg-secondary);
   border-radius: var(--radius-sm);
@@ -257,6 +258,7 @@ h2 {
   height: 100%;
   border: none;
   display: block;
+  -webkit-overflow-scrolling: touch;
 }
 
 #main-content .section {
@@ -309,12 +311,34 @@ h2 {
   }
 
   .chart-container {
-    height: 600px;
+    height: 70vh;
+    min-height: 500px;
+    max-height: 800px;
     padding: 0;
   }
+}
 
-  .site-nav__item--desktop-only {
-    display: none;
+@media (max-width: 480px) {
+  .chart-container {
+    height: 75vh;
+    min-height: 450px;
+    max-height: 700px;
+  }
+  
+  .page-hero {
+    padding: 3rem 1.25rem 2rem;
+  }
+  
+  .section {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .chart-container {
+    height: 85vh;
+    min-height: 400px;
   }
 }
   </style>
@@ -347,7 +371,7 @@ h2 {
           <li class="site-nav__item"><a class="site-nav__link" href="index.html">Home</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="methodology.html">Methodology</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="findings.html">Findings</a></li>
-          <li class="site-nav__item site-nav__item--desktop-only"><a class="site-nav__link site-nav__link--active" href="interactive.html">Interactive</a></li>
+          <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="interactive.html">Interactive</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="statistics.html">Statistics</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="contact.html">Contact</a></li>
         </ul>
@@ -389,46 +413,61 @@ h2 {
     <p>Copyright © 2025 English-Spanish Cognate Analysis. Unauthorized reproduction prohibited.</p>
   </footer>
   <script>
-    // Redirect mobile users to home page
-    (function() {
-      function isMobileDevice() {
-        return window.innerWidth <= 840 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      }
-      
-      if (isMobileDevice()) {
-        window.location.href = 'index.html';
-      }
-    })();
-
     // Make iframe responsive and ensure all datapoints are visible
+    function resizeChart() {
+      const iframe = document.querySelector('.chart-container iframe');
+      if (!iframe) return;
+      
+      try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        const plotlyDiv = iframeDoc.querySelector('.plotly-graph-div');
+        if (plotlyDiv && iframe.contentWindow.Plotly) {
+          const graphDiv = iframeDoc.getElementById(plotlyDiv.id);
+          if (graphDiv) {
+            // Use Plotly's resize method for proper responsive behavior
+            iframe.contentWindow.Plotly.Plots.resize(graphDiv);
+          }
+        }
+      } catch (e) {
+        // Cross-origin restrictions may prevent access
+        // This is expected for local files served from file:// protocol
+      }
+    }
+    
     window.addEventListener('load', function() {
       const iframe = document.querySelector('.chart-container iframe');
       if (iframe) {
-        // Adjust iframe content to fit container
+        // Adjust iframe content to fit container when loaded
         iframe.addEventListener('load', function() {
-          try {
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            const plotlyDiv = iframeDoc.querySelector('.plotly-graph-div');
-            if (plotlyDiv) {
-              // Remove fixed dimensions and make responsive
-              plotlyDiv.style.height = '100%';
-              plotlyDiv.style.width = '100%';
-              plotlyDiv.style.minHeight = '750px';
-              
-              // Resize Plotly if available
-              if (iframe.contentWindow.Plotly) {
-                const graphDiv = iframeDoc.getElementById(plotlyDiv.id);
-                if (graphDiv) {
-                  iframe.contentWindow.Plotly.Plots.resize(graphDiv);
-                }
-              }
-            }
-          } catch (e) {
-            // Cross-origin restrictions may prevent access
-            console.log('Cannot access iframe content (expected for local files)');
-          }
+          setTimeout(resizeChart, 100);
         });
+        
+        // If iframe is already loaded (cached)
+        if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+          setTimeout(resizeChart, 100);
+        }
       }
+    });
+    
+    // Handle window resize for responsive behavior
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resizeChart, 250);
+    });
+    
+    // Handle orientation change on mobile devices
+    window.addEventListener('orientationchange', function() {
+      setTimeout(function() {
+        resizeChart();
+        // Force a reflow to ensure proper sizing
+        const container = document.querySelector('.chart-container');
+        if (container) {
+          container.style.display = 'none';
+          container.offsetHeight; // Trigger reflow
+          container.style.display = '';
+        }
+      }, 500);
     });
   </script>
 </body>
