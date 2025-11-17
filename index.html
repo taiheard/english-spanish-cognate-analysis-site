@@ -233,6 +233,39 @@ h2 {
   font-size: 0.95rem;
 }
 
+.definitions {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 2.5rem 1.75rem;
+}
+
+.definitions__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.definition-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.definition-card__term {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.definition-card__description {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
 .site-footer {
   margin-top: 4rem;
   padding: 2rem 1.75rem;
@@ -341,6 +374,24 @@ h2 {
         width="1200"
         height="800"
       />
+    </section>
+
+    <section class="definitions" aria-labelledby="definitions-title">
+      <h2 id="definitions-title">Key Terms</h2>
+      <div class="definitions__grid">
+        <div class="definition-card">
+          <h3 class="definition-card__term">True Cognates</h3>
+          <p class="definition-card__description">Words in English and Spanish that share a common origin and maintain similar meanings. These are reliable vocabulary shortcuts for language learners, as their similarity typically indicates shared meaning.</p>
+        </div>
+        <div class="definition-card">
+          <h3 class="definition-card__term">False Friends</h3>
+          <p class="definition-card__description">Words that look or sound similar in English and Spanish but have different meanings. These deceptive pairs can lead to misunderstandings and are particularly important for learners to identify and avoid.</p>
+        </div>
+        <div class="definition-card">
+          <h3 class="definition-card__term">Loanwords</h3>
+          <p class="definition-card__description">Words borrowed from one language into another, often retaining their original form. These reflect cultural exchange and technological adoption, showing how languages evolve through contact.</p>
+        </div>
+      </div>
     </section>
 
     <section class="stat-banner" aria-labelledby="stat-banner-title">
