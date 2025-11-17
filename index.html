@@ -285,6 +285,14 @@ h2 {
   .page-hero {
     padding-top: 3.5rem;
   }
+
+  .site-nav__item--desktop-only {
+    display: none;
+  }
+
+  .card--desktop-only {
+    display: none;
+  }
 }
   </style>
   <link rel="preload" href="css/main.css" as="style" />
@@ -317,7 +325,7 @@ h2 {
           <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="index.html">Home</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="methodology.html">Methodology</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="findings.html">Findings</a></li>
-          <li class="site-nav__item"><a class="site-nav__link" href="interactive.html">Interactive</a></li>
+          <li class="site-nav__item site-nav__item--desktop-only"><a class="site-nav__link" href="interactive.html">Interactive</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="statistics.html">Statistics</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="contact.html">Contact</a></li>
         </ul>
@@ -378,7 +386,7 @@ h2 {
           <p class="card__body">Compare how cultural exchange and technological adoption shape the vocabulary flowing between English and Spanish.</p>
           <a class="card__link" href="findings.html#loanwords">View loanword analysis</a>
         </article>
-        <article class="card">
+        <article class="card card--desktop-only">
           <h3 class="card__title">Interactive dataset explorer</h3>
           <p class="card__body">Filter the full dataset by relationship type, domain, and complexity to tailor the analysis to your interests.</p>
           <a class="card__link" href="interactive.html">Launch the explorer</a>

@@ -312,6 +312,10 @@ h2 {
     height: 600px;
     padding: 0;
   }
+
+  .site-nav__item--desktop-only {
+    display: none;
+  }
 }
   </style>
   <link rel="preload" href="css/main.css" as="style" />
@@ -343,7 +347,7 @@ h2 {
           <li class="site-nav__item"><a class="site-nav__link" href="index.html">Home</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="methodology.html">Methodology</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="findings.html">Findings</a></li>
-          <li class="site-nav__item"><a class="site-nav__link site-nav__link--active" href="interactive.html">Interactive</a></li>
+          <li class="site-nav__item site-nav__item--desktop-only"><a class="site-nav__link site-nav__link--active" href="interactive.html">Interactive</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="statistics.html">Statistics</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="contact.html">Contact</a></li>
         </ul>
@@ -385,6 +389,17 @@ h2 {
     <p>Copyright © 2025 English-Spanish Cognate Analysis. Unauthorized reproduction prohibited.</p>
   </footer>
   <script>
+    // Redirect mobile users to home page
+    (function() {
+      function isMobileDevice() {
+        return window.innerWidth <= 840 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
+      
+      if (isMobileDevice()) {
+        window.location.href = 'index.html';
+      }
+    })();
+
     // Make iframe responsive and ensure all datapoints are visible
     window.addEventListener('load', function() {
       const iframe = document.querySelector('.chart-container iframe');
