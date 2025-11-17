@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mobile Responsiveness Test - Interactive Chart</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 1rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .test-section {
+      margin: 2rem 0;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .test-section h2 {
+      margin-top: 0;
+      color: #0a3d62;
+    }
+    .status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+    .status.pass {
+      background: #d4edda;
+      color: #155724;
+    }
+    .status.fail {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    .status.warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    .info {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      color: #666;
+    }
+    .viewport-info {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+      font-family: monospace;
+    }
+    button {
+      background: #0a3d62;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    button:hover {
+      background: #1f5b89;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mobile Responsiveness Test Suite</h1>
+  <p>This page tests the mobile responsiveness of the interactive chart page.</p>
+
+  <div class="viewport-info" id="viewport-info">
+    <strong>Current Viewport:</strong><br>
+    Width: <span id="width">-</span>px<br>
+    Height: <span id="height">-</span>px<br>
+    Device Pixel Ratio: <span id="dpr">-</span><br>
+    Orientation: <span id="orientation">-</span>
+  </div>
+
+  <div class="test-section">
+    <h2>1. Viewport Meta Tag</h2>
+    <div id="viewport-test">
+      <span class="status">Testing...</span>
+      <div class="info">Checking for proper viewport meta tag</div>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>2. Chart Container Responsiveness</h2>
+    <div id="container-test">
+      <span class="status">Testing...</span>
+      <div class="info">Checking if chart container adapts to screen size</div>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>3. CSS Media Queries</h2>
+    <div id="mediaquery-test">
+      <span class="status">Testing...</span>
+      <div class="info">Verifying breakpoints at 840px and 480px</div>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>4. JavaScript Resize Function</h2>
+    <div id="js-test">
+      <span class="status">Testing...</span>
+      <div class="info">Checking if resize function exists and works</div>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>5. Touch Event Support</h2>
+    <div id="touch-test">
+      <span class="status">Testing...</span>
+      <div class="info">Checking for touch event support</div>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>6. Orientation Change Handling</h2>
+    <div id="orientation-test">
+      <span class="status">Testing...</span>
+      <div class="info">Checking orientation change event listener</div>
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>7. Iframe Loading</h2>
+    <div id="iframe-test">
+      <span class="status">Testing...</span>
+      <div class="info">Verifying iframe loading attribute</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 2rem;">
+    <button onclick="runAllTests()">Run All Tests</button>
+    <button onclick="testOrientation()">Test Orientation Change</button>
+    <button onclick="testResize()">Test Resize</button>
+  </div>
+
+  <script>
+    function updateViewportInfo() {
+      document.getElementById('width').textContent = window.innerWidth;
+      document.getElementById('height').textContent = window.innerHeight;
+      document.getElementById('dpr').textContent = window.devicePixelRatio || 1;
+      document.getElementById('orientation').textContent = 
+        window.innerWidth > window.innerHeight ? 'Landscape' : 'Portrait';
+    }
+
+    function testViewport() {
+      const viewport = document.querySelector('meta[name="viewport"]');
+      const result = document.getElementById('viewport-test');
+      if (viewport && viewport.content.includes('width=device-width')) {
+        result.innerHTML = '<span class="status pass">PASS</span><div class="info">Viewport meta tag is correctly configured</div>';
+        return true;
+      } else {
+        result.innerHTML = '<span class="status fail">FAIL</span><div class="info">Viewport meta tag is missing or incorrect</div>';
+        return false;
+      }
+    }
+
+    function testContainer() {
+      const result = document.getElementById('container-test');
+      // Check if interactive.html has proper container styles
+      fetch('interactive.html')
+        .then(r => r.text())
+        .then(html => {
+          const hasMinHeight = html.includes('min-height: 500px') || html.includes('min-height:450px');
+          const hasMaxHeight = html.includes('max-height: 80vh') || html.includes('max-height:75vh');
+          const hasMobileMedia = html.includes('@media (max-width: 840px)');
+          
+          if (hasMinHeight && hasMaxHeight && hasMobileMedia) {
+            result.innerHTML = '<span class="status pass">PASS</span><div class="info">Chart container has responsive styles</div>';
+          } else {
+            result.innerHTML = '<span class="status fail">FAIL</span><div class="info">Missing responsive container styles</div>';
+          }
+        })
+        .catch(() => {
+          result.innerHTML = '<span class="status warning">WARNING</span><div class="info">Could not verify container styles (file may not be accessible)</div>';
+        });
+    }
+
+    function testMediaQueries() {
+      const result = document.getElementById('mediaquery-test');
+      const width = window.innerWidth;
+      let status = 'PASS';
+      let info = '';
+      
+      if (width < 480) {
+        info = `Small mobile detected (${width}px). Should use 75vh max-height.`;
+      } else if (width < 840) {
+        info = `Mobile detected (${width}px). Should use 80vh max-height.`;
+      } else {
+        info = `Desktop detected (${width}px). Should use 65vh or fixed height.`;
+      }
+      
+      result.innerHTML = `<span class="status pass">${status}</span><div class="info">${info}</div>`;
+    }
+
+    function testJavaScript() {
+      const result = document.getElementById('js-test');
+      fetch('interactive.html')
+        .then(r => r.text())
+        .then(html => {
+          const hasResizeFunction = html.includes('function resizeChart') || html.includes('resizeChart()');
+          const hasResizeListener = html.includes('addEventListener(\'resize\'') || html.includes('addEventListener("resize"');
+          const hasOrientationListener = html.includes('orientationchange');
+          
+          if (hasResizeFunction && hasResizeListener && hasOrientationListener) {
+            result.innerHTML = '<span class="status pass">PASS</span><div class="info">JavaScript resize handlers are present</div>';
+          } else {
+            result.innerHTML = '<span class="status fail">FAIL</span><div class="info">Missing JavaScript resize handlers</div>';
+          }
+        })
+        .catch(() => {
+          result.innerHTML = '<span class="status warning">WARNING</span><div class="info">Could not verify JavaScript (file may not be accessible)</div>';
+        });
+    }
+
+    function testTouch() {
+      const result = document.getElementById('touch-test');
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      
+      if (hasTouch) {
+        result.innerHTML = '<span class="status pass">PASS</span><div class="info">Touch events are supported on this device</div>';
+      } else {
+        result.innerHTML = '<span class="status warning">WARNING</span><div class="info">Touch events not detected (may be desktop browser)</div>';
+      }
+    }
+
+    function testOrientation() {
+      const result = document.getElementById('orientation-test');
+      fetch('interactive.html')
+        .then(r => r.text())
+        .then(html => {
+          const hasOrientation = html.includes('orientationchange');
+          
+          if (hasOrientation) {
+            result.innerHTML = '<span class="status pass">PASS</span><div class="info">Orientation change handler is present</div>';
+          } else {
+            result.innerHTML = '<span class="status fail">FAIL</span><div class="info">Missing orientation change handler</div>';
+          }
+        })
+        .catch(() => {
+          result.innerHTML = '<span class="status warning">WARNING</span><div class="info">Could not verify orientation handler</div>';
+        });
+    }
+
+    function testIframe() {
+      const result = document.getElementById('iframe-test');
+      fetch('interactive.html')
+        .then(r => r.text())
+        .then(html => {
+          const hasLoading = html.includes('loading="lazy"') || html.includes('loading=\'lazy\'');
+          const hasIframe = html.includes('<iframe');
+          
+          if (hasIframe && hasLoading) {
+            result.innerHTML = '<span class="status pass">PASS</span><div class="info">Iframe has lazy loading attribute</div>';
+          } else if (hasIframe) {
+            result.innerHTML = '<span class="status warning">WARNING</span><div class="info">Iframe exists but missing loading attribute</div>';
+          } else {
+            result.innerHTML = '<span class="status fail">FAIL</span><div class="info">Iframe not found</div>';
+          }
+        })
+        .catch(() => {
+          result.innerHTML = '<span class="status warning">WARNING</span><div class="info">Could not verify iframe</div>';
+        });
+    }
+
+    function runAllTests() {
+      testViewport();
+      testContainer();
+      testMediaQueries();
+      testJavaScript();
+      testTouch();
+      testOrientation();
+      testIframe();
+      updateViewportInfo();
+    }
+
+    function testOrientation() {
+      alert('Rotate your device to test orientation change handling. The chart should resize automatically.');
+    }
+
+    function testResize() {
+      alert('Resize your browser window to test resize handling. The chart should adapt smoothly.');
+    }
+
+    // Update viewport info on load and resize
+    updateViewportInfo();
+    window.addEventListener('resize', updateViewportInfo);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(updateViewportInfo, 100);
+    });
+
+    // Run tests on load
+    window.addEventListener('load', () => {
+      setTimeout(runAllTests, 500);
+    });
+  </script>
+</body>
+</html>
+

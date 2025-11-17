@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
   <title>Interactive Explorer | English-Spanish Cognate Analysis</title>
   <meta name="description" content="Interact with the full English-Spanish cognate dataset—filter by relationship type, domain, complexity, and more." />
   <link rel="preconnect" href="https://cdn.plot.ly" crossorigin />
@@ -259,6 +259,8 @@ h2 {
   border: none;
   display: block;
   min-height: 500px;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
 }
 
 #main-content .section {
@@ -477,6 +479,31 @@ h2 {
     window.addEventListener('orientationchange', function() {
       setTimeout(resizeChart, 300);
     });
+
+    // Handle visual viewport changes (for mobile browsers with dynamic UI)
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(resizeChart, 150);
+      });
+    }
+
+    // Fallback for older browsers - use matchMedia for better breakpoint detection
+    const mobileQuery = window.matchMedia('(max-width: 840px)');
+    const smallMobileQuery = window.matchMedia('(max-width: 480px)');
+    
+    function handleMediaChange() {
+      resizeChart();
+    }
+    
+    if (mobileQuery.addEventListener) {
+      mobileQuery.addEventListener('change', handleMediaChange);
+      smallMobileQuery.addEventListener('change', handleMediaChange);
+    } else {
+      // Fallback for older browsers
+      mobileQuery.addListener(handleMediaChange);
+      smallMobileQuery.addListener(handleMediaChange);
+    }
   </script>
 </body>
 </html>
