@@ -311,14 +311,28 @@ h2 {
   }
 
   .chart-container {
-    height: calc(100vh - 300px);
+    height: auto;
     min-height: 500px;
-    max-height: 800px;
+    max-height: 80vh;
     padding: 0;
   }
 
   .chart-container iframe {
     min-height: 500px;
+    max-height: 80vh;
+  }
+
+  /* Ensure chart container doesn't overflow on small screens */
+  @media (max-width: 480px) {
+    .chart-container {
+      min-height: 450px;
+      max-height: 75vh;
+    }
+    
+    .chart-container iframe {
+      min-height: 450px;
+      max-height: 75vh;
+    }
   }
 }
   </style>
@@ -395,47 +409,51 @@ h2 {
   <script>
     // Make iframe responsive and ensure all datapoints are visible
     function resizeChart() {
-      const chartContainer = document.querySelector('.chart-container');
       const iframe = document.querySelector('.chart-container iframe');
+      const container = document.querySelector('.chart-container');
       
-      if (!chartContainer || !iframe) return;
-      
-      // Calculate responsive height based on viewport
-      const viewportHeight = window.innerHeight;
-      const viewportWidth = window.innerWidth;
-      
-      // For mobile devices, use viewport-based height
-      if (viewportWidth <= 840) {
-        // Mobile: use 60-70% of viewport height, with min/max constraints
-        const mobileHeight = Math.max(500, Math.min(800, viewportHeight * 0.65));
-        chartContainer.style.height = mobileHeight + 'px';
-      } else {
-        // Desktop: maintain aspect ratio but allow flexibility
-        const desktopHeight = Math.max(600, Math.min(900, viewportHeight * 0.7));
-        chartContainer.style.height = desktopHeight + 'px';
-      }
-      
-      // Try to resize Plotly chart inside iframe
-      try {
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        const plotlyDiv = iframeDoc.querySelector('.plotly-graph-div');
+      if (iframe && container) {
+        // Calculate responsive height based on viewport
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+        const isSmallMobile = viewportWidth < 480;
+        const isMobile = viewportWidth < 840;
         
-        if (plotlyDiv && iframe.contentWindow.Plotly) {
-          const graphDiv = iframeDoc.getElementById(plotlyDiv.id);
-          if (graphDiv) {
-            // Use setTimeout to ensure iframe is ready
-            setTimeout(function() {
-              iframe.contentWindow.Plotly.Plots.resize(graphDiv);
-            }, 100);
-          }
+        // Calculate appropriate height based on screen size
+        let newHeight;
+        if (isSmallMobile) {
+          // Very small screens: use 75vh with min 450px
+          newHeight = Math.max(450, viewportHeight * 0.75);
+        } else if (isMobile) {
+          // Mobile screens: use 80vh with min 500px
+          newHeight = Math.max(500, viewportHeight * 0.8);
+        } else {
+          // Desktop: maintain original size but allow some flexibility
+          newHeight = Math.max(600, Math.min(750, viewportHeight * 0.65));
         }
-      } catch (e) {
-        // Cross-origin restrictions may prevent access (expected for local files)
-        // This is fine - the iframe will still resize correctly
+        
+        container.style.height = newHeight + 'px';
+        
+        // Try to resize Plotly chart inside iframe
+        try {
+          const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+          const plotlyDiv = iframeDoc.querySelector('.plotly-graph-div');
+          if (plotlyDiv && iframe.contentWindow.Plotly) {
+            const graphDiv = iframeDoc.getElementById(plotlyDiv.id);
+            if (graphDiv) {
+              // Use requestAnimationFrame to ensure DOM is ready
+              requestAnimationFrame(() => {
+                iframe.contentWindow.Plotly.Plots.resize(graphDiv);
+              });
+            }
+          }
+        } catch (e) {
+          // Cross-origin restrictions may prevent access
+          // This is expected for local files served via file:// protocol
+        }
       }
     }
-    
-    // Initialize on load
+
     window.addEventListener('load', function() {
       resizeChart();
       
@@ -447,15 +465,15 @@ h2 {
         });
       }
     });
-    
-    // Resize on window resize (with debouncing)
+
+    // Resize on window resize with debouncing
     let resizeTimeout;
     window.addEventListener('resize', function() {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(resizeChart, 150);
     });
-    
-    // Also handle orientation changes on mobile
+
+    // Handle orientation change on mobile
     window.addEventListener('orientationchange', function() {
       setTimeout(resizeChart, 300);
     });
