@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Interactive Explorer | English-Spanish Cognate Analysis</title>
   <meta name="description" content="Interact with the full English-Spanish cognate dataset—filter by relationship type, domain, complexity, and more." />
   <link rel="preconnect" href="https://cdn.plot.ly" crossorigin />
@@ -253,14 +253,40 @@ h2 {
   position: relative;
 }
 
+.chart-container.is-hidden {
+  display: none;
+}
+
 .chart-container iframe {
   width: 100%;
   height: 100%;
   border: none;
   display: block;
   min-height: 500px;
-  -webkit-overflow-scrolling: touch;
-  touch-action: pan-x pan-y;
+}
+
+.chart-placeholder {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.75rem;
+  margin: 1rem 0;
+  text-align: center;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  min-height: 280px;
+}
+
+.chart-placeholder strong {
+  color: var(--accent);
+}
+
+.chart-placeholder--visible {
+  display: flex;
 }
 
 #main-content .section {
@@ -401,6 +427,9 @@ h2 {
             style="width: 100%; height: 100%; border: none;">
           </iframe>
         </div>
+        <div id="chart-placeholder" class="chart-placeholder" aria-hidden="true" role="status" aria-live="polite">
+          <p><strong>Rotate your device</strong> to landscape to explore the interactive chart.</p>
+        </div>
         <p class="section__note">Use the interactive controls to filter by religion or technology. Hover over data points to see specific word pairs and their adoption timelines.</p>
       </div>
     </section>
@@ -415,6 +444,10 @@ h2 {
       const container = document.querySelector('.chart-container');
       
       if (iframe && container) {
+        if (container.classList.contains('is-hidden')) {
+          return;
+        }
+
         // Calculate responsive height based on viewport
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
@@ -456,14 +489,62 @@ h2 {
       }
     }
 
+    function updateChartAvailability() {
+      const container = document.getElementById('chart-container');
+      const placeholder = document.getElementById('chart-placeholder');
+      const iframe = container ? container.querySelector('iframe') : null;
+
+      if (!container || !placeholder) {
+        return false;
+      }
+
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const isPhoneViewport = viewportWidth <= 600;
+      const isPortrait = viewportHeight > viewportWidth;
+      const shouldHideChart = isPhoneViewport && isPortrait;
+
+      if (shouldHideChart) {
+        container.classList.add('is-hidden');
+        container.setAttribute('aria-hidden', 'true');
+        placeholder.classList.add('chart-placeholder--visible');
+        placeholder.setAttribute('aria-hidden', 'false');
+
+        if (iframe) {
+          iframe.setAttribute('tabindex', '-1');
+        }
+
+        return false;
+      }
+
+      container.classList.remove('is-hidden');
+      container.removeAttribute('aria-hidden');
+      placeholder.classList.remove('chart-placeholder--visible');
+      placeholder.setAttribute('aria-hidden', 'true');
+
+      if (iframe) {
+        iframe.removeAttribute('tabindex');
+      }
+
+      return true;
+    }
+
+    function handleViewportChange({ forceResize = false } = {}) {
+      const chartIsVisible = updateChartAvailability();
+
+      if (chartIsVisible || forceResize) {
+        resizeChart();
+      }
+    }
+
     window.addEventListener('load', function() {
-      resizeChart();
+      handleViewportChange({ forceResize: true });
       
       const iframe = document.querySelector('.chart-container iframe');
       if (iframe) {
         // Resize when iframe loads
         iframe.addEventListener('load', function() {
-          resizeChart();
+          handleViewportChange({ forceResize: true });
         });
       }
     });
@@ -472,38 +553,13 @@ h2 {
     let resizeTimeout;
     window.addEventListener('resize', function() {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resizeChart, 150);
+      resizeTimeout = setTimeout(handleViewportChange, 150);
     });
 
     // Handle orientation change on mobile
     window.addEventListener('orientationchange', function() {
-      setTimeout(resizeChart, 300);
+      setTimeout(handleViewportChange, 300);
     });
-
-    // Handle visual viewport changes (for mobile browsers with dynamic UI)
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(resizeChart, 150);
-      });
-    }
-
-    // Fallback for older browsers - use matchMedia for better breakpoint detection
-    const mobileQuery = window.matchMedia('(max-width: 840px)');
-    const smallMobileQuery = window.matchMedia('(max-width: 480px)');
-    
-    function handleMediaChange() {
-      resizeChart();
-    }
-    
-    if (mobileQuery.addEventListener) {
-      mobileQuery.addEventListener('change', handleMediaChange);
-      smallMobileQuery.addEventListener('change', handleMediaChange);
-    } else {
-      // Fallback for older browsers
-      mobileQuery.addListener(handleMediaChange);
-      smallMobileQuery.addListener(handleMediaChange);
-    }
   </script>
 </body>
 </html>
